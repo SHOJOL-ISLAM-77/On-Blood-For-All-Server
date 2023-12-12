@@ -33,6 +33,15 @@ async function run() {
     const featureCollection = client.db("OneBloodDB").collection("feature");
     const requestCollection = client.db("OneBloodDB").collection("request");
     const blogsCollection = client.db("OneBloodDB").collection("blogs");
+    const bannerCollection = client.db("OneBloodDB").collection("banner");
+
+    // banner relater api 
+
+    app.get("/banner", async (req, res) => {
+           const result = await bannerCollection.findOne();
+      res.send(result);
+    
+  });
 
     //blogs related api
     app.post("/blog-post", async (req, res) => {
@@ -54,6 +63,15 @@ async function run() {
         const result = await blogsCollection.find(query).toArray();
         res.send(result);
       }
+    });
+
+    app.get("/blogs-for-blog-page", async (req, res) => {
+        const query = {
+          status: "published",
+        };
+        const result = await blogsCollection.find(query).toArray();
+        res.send(result);
+      
     });
 
     app.delete("/delete-blog/:id", async (req, res) => {
